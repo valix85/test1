@@ -11,20 +11,14 @@ import java.util.stream.Collectors;
 public class LoadProperties {
 
     private static LoadProperties instance = null;
-    Properties prop = new Properties();
+    private static String fp = null;
+    private static Properties prop = new Properties();
 
-    InputStream input = null;
+    private static InputStream input = null;
 
     private LoadProperties() {
-    }
-
-    public static LoadProperties getInstance() {
-        return (instance == null) ? (instance = new LoadProperties()) : instance;
-    }
-
-    public List<String> getProperties() {
         try {
-            input = new FileInputStream("src" + File.separator + "config" + File.separator + "db-dev.properties");
+            input = new FileInputStream(fp);
             // load a properties file
             prop.load(input);
         } catch (IOException ex) {
@@ -38,6 +32,17 @@ public class LoadProperties {
                 }
             }
         }
+    }
+
+    public static LoadProperties getInstance() {
+        if (fp==null){
+            System.err.println("Caricare il file di property prima di usarlo.");
+            return null;
+        }
+        return (instance == null) ? (instance = new LoadProperties()) : instance;
+    }
+
+    public List<String> getProperties() {
         // get the property value and print it out
         return prop.keySet().stream().map(Object::toString).collect(Collectors.toList());
     }
@@ -47,5 +52,15 @@ public class LoadProperties {
             return prop.getProperty(properties);
         }
         return null;
+    }
+
+    public static void setFp(String file) {
+        File f = new File(file);
+        if(f.exists()) {
+            fp = file;
+        }else{
+            fp=null;
+            System.err.println("File di property non valido!");
+        }
     }
 }
