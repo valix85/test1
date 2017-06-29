@@ -4,7 +4,6 @@ import dao.DBConn;
 
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -22,7 +21,7 @@ public class DataLoader {
     public DataLoader(DBConn db) {this.db = db;}
 
     //Metodo per popolare il database
-    public void caricaFile(Path p) throws IOException {
+    public boolean caricaFile(Path p) throws IOException {
 
         List<String> list = new ArrayList<>();
         FileReader f;
@@ -39,11 +38,13 @@ public class DataLoader {
                 String file = "";
                 for (int i = 0; i < list.size(); i++) {
                     file = list.get(i);
-                } db.doSQL(file);
-
+                } if (db.doSQL(file)!=-1){
+                    return true;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 }

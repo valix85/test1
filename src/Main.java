@@ -1,10 +1,4 @@
-import dao.DBConn;
-import service.DataLoader;
-
 import javax.swing.text.DateFormatter;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.sql.*;
 import java.text.DateFormat;
 import java.time.LocalDate;
@@ -18,17 +12,6 @@ import java.util.Scanner;
  */
 public class Main {
     public static void main(String[] args) {
-
-        DataLoader dl=new DataLoader(DBConn.getistance());
-        try {
-            dl.caricaFile(new File("example-data"+File.separator+"db-schema.sql").toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        System.exit(0);
-
         //definizione parametri per la connessione
         String driver = "com.mysql.jdbc.Driver";
         String url = "jdbc:mysql://localhost:3306/autonoleggio";
