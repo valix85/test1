@@ -1,11 +1,13 @@
 package service;
 
-import javafx.scene.shape.Path;
+import dao.DBConn;
+
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +20,16 @@ public class DataLoader {
 
     public DataLoader(DBConn db) {this.db = db;}
 
-    public void caricaFile(String p) throws IOException {
+    public void caricaFile(Path p) throws IOException {
+
+
+        System.out.println(p);
+
+        System.exit(0);
 
         List<String> list = new ArrayList<>();
         FileReader f;
-        f = new FileReader(p);
+        f = new FileReader(p.toString());
         BufferedReader b;
         b = new BufferedReader(f);
         String s;
