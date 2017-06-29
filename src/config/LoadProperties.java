@@ -39,9 +39,7 @@ public class LoadProperties {
             }
         }
         // get the property value and print it out
-        ArrayList<String> ar = new ArrayList<String>();
-        prop.values().stream().forEach(t->ar.add(t.toString()));
-        return ar;
+        return prop.keySet().stream().map(Object::toString).collect(Collectors.toList());
     }
 
     public String getProp(String properties) {
