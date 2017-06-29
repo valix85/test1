@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `Auto Noleggio` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `Auto Noleggio`;
+CREATE DATABASE IF NOT EXISTS `db_auto_noleggio` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `db_auto_noleggio`;
 
 CREATE TABLE IF NOT EXISTS `categoria` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
