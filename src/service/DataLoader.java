@@ -22,11 +22,6 @@ public class DataLoader {
 
     public void caricaFile(Path p) throws IOException {
 
-
-        System.out.println(p);
-
-        System.exit(0);
-
         List<String> list = new ArrayList<>();
         FileReader f;
         f = new FileReader(p.toString());
@@ -42,7 +37,8 @@ public class DataLoader {
                 String file = "";
                 for (int i = 0; i < list.size(); i++) {
                     file = list.get(i);
-                }//db.doSQL(file);
+                } db.doSQL(file);
+
             }
         } catch (IOException e) {
             e.printStackTrace();

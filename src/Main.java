@@ -21,7 +21,7 @@ public class Main {
 
         DataLoader dl=new DataLoader(DBConn.getistance());
         try {
-            dl.caricaFile(new File("exmple-data/db-schema.sql").toPath());
+            dl.caricaFile(new File("example-data"+File.separator+"db-schema.sql").toPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
