@@ -18,8 +18,10 @@ public class DataLoader {
 
     private DBConn db;
 
+    //Costruttore
     public DataLoader(DBConn db) {this.db = db;}
 
+    //Metodo per popolare il database
     public void caricaFile(Path p) throws IOException {
 
         List<String> list = new ArrayList<>();
