@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by alberti stefano on 29/06/2017.
@@ -23,24 +24,18 @@ public class DataLoader {
     //Metodo per popolare il database
     public boolean caricaFile(Path p) throws IOException {
 
-        List<String> list = new ArrayList<>();
-        FileReader f;
-        f = new FileReader(p.toString());
-        BufferedReader b;
-        b = new BufferedReader(f);
-        String s;
+
+        FileReader f = new FileReader(p.toString());
+        BufferedReader b = new BufferedReader(f);
+        String s="";
+        String file = "";
         try {
-            while (true) {
-                s = b.readLine();
-                list.add(s);
-                if (s == null)
-                    break;
-                String file = "";
-                for (int i = 0; i < list.size(); i++) {
-                    file = list.get(i);
-                } if (db.doSQL(file)!=-1){
-                    return true;
-                }
+            while ((s = b.readLine()) != null) {
+                file += s;
+            }
+            StringTokenizer st = new StringTokenizer(file,";");
+            while(st.hasMoreTokens()){
+                db.doSQL(st.nextToken());
             }
         } catch (IOException e) {
             e.printStackTrace();

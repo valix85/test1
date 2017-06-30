@@ -2,8 +2,13 @@ package dao;
 
 import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import config.LoadProperties;
+import service.DataLoader;
 
+import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
 
 /**
  * Created by Rivolta Fabio on 29/06/2017.
@@ -33,11 +38,15 @@ public class DBConn {
 
         try {
             Class.forName(getDriver());
-            con = DriverManager.getConnection(getUrl(), getUsername(), getPassword());
+            con = DriverManager.getConnection(getUrl() + getDatabase(), getUsername(), getPassword());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException e) {
-            System.out.println("il nome di questo database non esiste");
+            if (e.getErrorCode() == 1049) {
+                this.creazionedb(prop);
+            }
+            //System.out.println(e.getErrorCode());
+            //System.out.println("il nome di questo database non esiste");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,11 +70,13 @@ public class DBConn {
         } else {
             return null;
         }
+        System.out.println("\n\n*** SELEZIONATO IL DATABASE: "+prop.getProp("db.connection.database")+" ***\n");
         return cd;
     }
 
     //metodo per utilizzare la insert into
     public int doSQL(String sql) {
+        System.out.println("ESEGUO: " + sql);
         try {
             Statement statement = con.createStatement();
             int rs = statement.executeUpdate(sql);
@@ -112,13 +123,64 @@ public class DBConn {
     }
 
 
-    public int creazionedb() {
+    public int creazionedb(LoadProperties prop) {
+        System.out.println("\n\n*** CREAZIONE DEL DATABASE ***\n");
+        String filepath = prop.getProp("db.schema.sql");
+        filepath = filepath.replaceAll("/", Matcher.quoteReplacement(File.separator));
+        //System.out.println(filepath);
+
+        String sql ="";
+
         try {
-            Statement statement = con.createStatement();
-            int r = statement.executeUpdate("");
-        } catch (SQLException e) {
+            FileReader fr = new FileReader(filepath);
+            BufferedReader br = new BufferedReader(fr);
+            String s;
+            while((s = br.readLine()) != null) {
+                sql+=s;
+            }
+            br.close();
+            fr.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //System.out.println(sql);
+        StringTokenizer st = new StringTokenizer(sql, ";");
+
+        try {
+            Class.forName(getDriver());
+            con = DriverManager.getConnection(getUrl(), getUsername(), getPassword());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException e) {
+            System.out.println("DBConn->creazionedb : " + e.getErrorCode() + " - " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            while (st.hasMoreTokens()){
+                doSQL(st.nextToken());
+                //con.createStatement().execute(st.nextToken());
+            }
+            System.out.println("\n\n*** SELEZIONATO IL DATABASE: "+prop.getProp("db.connection.database")+" ***\n");
+            con.setCatalog(prop.getProp("db.connection.database"));
+            System.out.println("\n\n*** POPOLAMENTO DEL DATABASE ***\n");
+            DataLoader dl = new DataLoader(this);
+
+            String filepathDatas = prop.getProp("db.schema.datas");
+            filepathDatas = filepathDatas.replaceAll("/", Matcher.quoteReplacement(File.separator));
+            dl.caricaFile(new File(filepathDatas).toPath());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         return -1;
     }
 
