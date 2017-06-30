@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `auto` (
   `kilometri` int(10) NOT NULL,
   `noleggiata` tinyint(1) NOT NULL,
   `data_scadenza_assicurazione` date NOT NULL,
-  `prezzoGiornaliero` int(3) NOT NULL,
+  `prezzoGiornaliero` decimal(10,2) NOT NULL,
   `n_Porte` int(1) NOT NULL,
   `fk_rel_marca_categoria` int(3) NOT NULL,
   `fk_colore` int(2) NOT NULL,
@@ -78,4 +78,6 @@ CREATE TABLE `view_catalogo_auto` (
 	`marca` VARCHAR(30) NOT NULL COLLATE 'latin1_swedish_ci',
 	`modello` VARCHAR(30) NOT NULL COLLATE 'latin1_swedish_ci',
 	`categoria` VARCHAR(64) NOT NULL COLLATE 'latin1_swedish_ci'
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
+DROP TABLE IF EXISTS `view_catalogo_auto`;
+CREATE VIEW `view_catalogo_auto` AS select `rmc`.`id_relazione` AS `id`,`m`.`marca` AS `marca`,`mo`.`modello` AS `modello`,`c`.`categoria` AS `categoria` from (((`rel_marca_categoria` `rmc` join `marca` `m` on((`rmc`.`fk_marca` = `m`.`id`))) join `modello` `mo` on((`rmc`.`fk_modello` = `mo`.`id`))) join `categoria` `c` on((`rmc`.`fk_categoria` = `c`.`id`)));
