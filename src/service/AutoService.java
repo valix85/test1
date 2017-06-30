@@ -21,9 +21,9 @@ public class AutoService {
         this.db=db;
     }
 
-    public List<Auto> getAutoInScadenza(){
+    public List<Auto> getAutoInScadenza(Integer traGiorni){
         List<Auto> risultato = new ArrayList<>();
-        String sql = "SELECT * FROM auto";
+        String sql = "SELECT * FROM auto WHERE data_scadenza_assicurazione <= (NOW()+ INTERVAL "+traGiorni+" day) ";
         ResultSet rs = db.runSQL(sql);
         try {
             while(rs.next()==true){
@@ -33,6 +33,13 @@ public class AutoService {
                 String sdatatmp = rs.getString("data_scadenza_assicurazione");
                 LocalDate datatmp = LocalDate.parse(sdatatmp, DateTimeFormatter.ISO_LOCAL_DATE);
                 tmp.setData_scadenza_assicurazione(datatmp);
+                tmp.setNumeroTelaio(rs.getString("numeroTelaio"));
+                tmp.setKilometri(rs.getInt("kilometri"));
+                tmp.setNoleggiata(rs.getBoolean("noleggiata"));
+                tmp.setPrezzoGiornaliero(rs.getDouble("prezzoGiornaliero"));
+                tmp.setN_Porte(rs.getInt("n_Porte"));
+                tmp.setFk_rel_marca_categoria(rs.getInt("fk_rel_marca_categoria"));
+                tmp.setFk_colore(rs.getInt("fk_colore"));
                 risultato.add(tmp);
             }
         } catch (SQLException e) {

@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `auto` (
   `kilometri` int(10) NOT NULL,
   `noleggiata` tinyint(1) NOT NULL,
   `data_scadenza_assicurazione` date NOT NULL,
-  `prezzoGiornaliero` int(3) NOT NULL,
+  `prezzoGiornaliero` decimal(10,2) NOT NULL,
   `n_Porte` int(1) NOT NULL,
   `fk_rel_marca_categoria` int(3) NOT NULL,
   `fk_colore` int(2) NOT NULL,

@@ -12,7 +12,7 @@ public class Auto {
     Integer kilometri;
     Boolean noleggiata;
     LocalDate data_scadenza_assicurazione;
-    Integer prezzoGiornaliero;
+    double prezzoGiornaliero;
     Integer n_Porte;
     Integer fk_rel_marca_categoria;
     Integer fk_colore;
@@ -81,11 +81,11 @@ public class Auto {
         this.data_scadenza_assicurazione = data_scadenza_assicurazione;
     }
 
-    public Integer getPrezzoGiornaliero() {
+    public Double getPrezzoGiornaliero() {
         return prezzoGiornaliero;
     }
 
-    public void setPrezzoGiornaliero(Integer prezzoGiornaliero) {
+    public void setPrezzoGiornaliero(Double prezzoGiornaliero) {
         this.prezzoGiornaliero = prezzoGiornaliero;
     }
 

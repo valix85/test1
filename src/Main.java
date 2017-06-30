@@ -23,8 +23,10 @@ public class Main {
         DBConn db = DBConn.getistance(prop);
 
 
+        /* AUTO CON ASSICURAZIONE IN SCADENZA */
+
         AutoService as = new AutoService(db);
-        as.getAutoInScadenza().stream().forEach(System.out::println);
+        as.getAutoInScadenza(30).stream().forEach(System.out::println);
 
 
 
