@@ -26,9 +26,9 @@ public class Main {
         /* AUTO CON ASSICURAZIONE IN SCADENZA */
 
         AutoService as = new AutoService(db);
-        as.getAutoInScadenza(30).stream().forEach(System.out::println);
+        /*as.getAutoInScadenza(30).stream().forEach(System.out::println);*/
 
-
+        as.getAutoVendibili(80000).stream().forEach(System.out::println);
 
     }
 }
