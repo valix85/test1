@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 /**
- * Created by Agatino D'Agate on 27/06/2017.
+ * Created by Nextre on 27/06/2017.
  */
 public class Main {
     public static void main(String[] args) {
