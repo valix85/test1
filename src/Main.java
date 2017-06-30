@@ -1,5 +1,6 @@
 import config.LoadProperties;
 import dao.DBConn;
+import service.AutoService;
 
 import javax.swing.text.DateFormatter;
 import java.io.File;
@@ -19,11 +20,14 @@ public class Main {
 
         LoadProperties.setFp("src" + File.separator + "config" + File.separator + "db-dev.properties");
         LoadProperties prop = LoadProperties.getInstance();
-
-        //prop.getProperties().forEach(System.out::println);
         DBConn db = DBConn.getistance(prop);
 
-        System.out.println(db.runSQL("SELECT * FROM colore"));
+
+        AutoService as = new AutoService(db);
+        as.getAutoInScadenza().stream().forEach(System.out::println);
+
+
+
     }
 }
 
